@@ -1,6 +1,3 @@
-/* eslint-disable array-callback-return */
-/* eslint-disable react/jsx-pascal-case */
-/* eslint-disable no-undef */
 import React, { useState } from "react";
 import dateFormat from "dateformat";
 import {
@@ -26,30 +23,32 @@ function RenderStaff({ staff, departmentId }) {
     return (
       <Stagger in>
         <Fade in>
-          <div className=" row">
-            <div className="col-lg-3 col-md-4 col-12">
-              <img
-                className="img"
-                src={staff.image}
-                style={{ width: "100%" }}
-                alt={staff.name}
-              />
-            </div>
-            <div key={staff.id} className="col-lg-9 col-md-8 col-12">
-              <h3> {staff.name} </h3>
-              <p>Ngày sinh: {dateFormat(staff.doB, "dd/mm/yyyy")}</p>
-              <p>
-                Ngày vào công ty: {dateFormat(staff.startDate, "dd/mm/yyyy")}
-              </p>
-              {departmentId.map((department) => {
-                if (department.id === staff.departmentId) {
-                  return (
-                    <p key={department.id}>Phòng ban: {department.name}</p>
-                  );
-                }
-              })}
-              <p>Số ngày nghỉ còn lại: {staff.annualLeave}</p>
-              <p>Số ngày đã làm thêm: {staff.overTime}</p>
+          <div className="container">
+            <div className=" row">
+              <div className="col-lg-3 col-md-4 col-12">
+                <img
+                  className="img"
+                  src={staff.image}
+                  style={{ width: "100%" }}
+                  alt={staff.name}
+                />
+              </div>
+              <div key={staff.id} className="col-lg-9 col-md-8 col-12">
+                <h3> {staff.name} </h3>
+                <p>Ngày sinh: {dateFormat(staff.doB, "dd/mm/yyyy")}</p>
+                <p>
+                  Ngày vào công ty: {dateFormat(staff.startDate, "dd/mm/yyyy")}
+                </p>
+                {departmentId.map((department) => {
+                  if (department.id === staff.departmentId) {
+                    return (
+                      <p key={department.id}>Phòng ban: {department.name}</p>
+                    );
+                  }
+                })}
+                <p>Số ngày nghỉ còn lại: {staff.annualLeave}</p>
+                <p>Số ngày đã làm thêm: {staff.overTime}</p>
+              </div>
             </div>
           </div>
         </Fade>
@@ -106,7 +105,7 @@ function StaffDetail(props) {
   } else if (props.staff != null)
     return (
       <>
-        <div>
+        <div className="container">
           <div className="row">
             <Breadcrumb>
               <BreadcrumbItem>
@@ -121,18 +120,21 @@ function StaffDetail(props) {
               departmentId={props.department.department}
             />
           </div>
-          <Button type="button" color="info" outline onClick={toggleModal}>
-            Cập nhật thông tin
-          </Button>
-          <Button
-            type="button"
-            color="danger"
-            value="delete"
-            outline
-            onClick={handleDeleteStaff}
-          >
-            Xóa
-          </Button>
+          <div className="m-3">
+            <Button type="button" color="info" outline onClick={toggleModal}>
+              Cập nhật thông tin
+            </Button>
+            <Button
+              className="ml-3"
+              type="button"
+              color="danger"
+              value="delete"
+              outline
+              onClick={handleDeleteStaff}
+            >
+              Xóa
+            </Button>
+          </div>
         </div>
         <Modal isOpen={isModalOpen} toggle={toggleModal}>
           <ModalHeader>Chỉnh sửa nhân viên</ModalHeader>

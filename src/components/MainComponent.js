@@ -74,7 +74,7 @@ class Main extends Component {
       return (
         <StaffDetail
           staff={
-            this.props.staffs.filter(
+            this.props.staffs.staff.filter(
               (staff) => staff.id === parseInt(match.params.id, 10)
             )[0]
           }

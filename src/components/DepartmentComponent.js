@@ -22,7 +22,7 @@ const RenderDepartment = ({ department, isLoading, errMess }) => {
 function Department(props) {
   const department = props.department.department.map((department) => {
     return (
-      <div className="col-lg-4 col-md-6 col-12" key={department.id}>
+      <div className="col-lg-4 col-md-6 col-12 mt-2" key={department.id}>
         <RenderDepartment department={department} />
       </div>
     );

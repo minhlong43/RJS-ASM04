@@ -82,15 +82,11 @@ class Menu extends Component {
       overTime: e.overTime,
       image: "/assets/images/alberto.png",
     };
-    this.props.onStaff(newStaff);
+    this.props.postStaff(newStaff);
     console.log(newStaff);
   }
 
   render() {
-    const onAddStaff = (staff) => {
-      onAddStaff(staff);
-    };
-
     return (
       <div className="container">
         <div key={this.props.id} className="row">
