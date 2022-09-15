@@ -1,19 +1,33 @@
 import React, { useState } from "react";
 import { Card, CardImg, CardTitle, Form, Input, Button } from "reactstrap";
+import { FadeTransform } from "react-animation-components";
 import { Link } from "react-router-dom";
-import Menu from "./MenuComponent";
+import AddStaff from "./MenuComponent";
+import { Loading } from "./LoadingComponent";
 
-function RenderStaffList({ staff, onClick }) {
-  return (
-    <Card>
-      <Link to={`/staff/${staff.id}`}>
-        <CardImg width="100%" src={staff.image} alt={staff.name} />
-        <div>
-          <CardTitle>{staff.name}</CardTitle>
-        </div>
-      </Link>
-    </Card>
-  );
+function RenderStaffList({ staff, onClick, isLoading, errMess }) {
+  if (isLoading) {
+    return <Loading />;
+  } else if (errMess) {
+    return <h4>{errMess}</h4>;
+  } else
+    return (
+      <FadeTransform
+        in
+        transformProps={{
+          exitTransform: "scale(0.5) translateY(-50%)",
+        }}
+      >
+        <Card>
+          <Link to={`/staff/${staff.id}`}>
+            <CardImg width="100%" src={staff.image} alt={staff.name} />
+            <div>
+              <CardTitle>{staff.name}</CardTitle>
+            </div>
+          </Link>
+        </Card>
+      </FadeTransform>
+    );
 }
 
 const StaffList = (props) => {
@@ -41,28 +55,51 @@ const StaffList = (props) => {
     }
   };
 
-  const onAddStaff = (staff) => {
-    props.onAddStaff(staff);
+  const postStaff = (staff) => {
+    props.postStaff(staff);
   };
 
-  const strSearch = searchStaff.map((staff) => {
+  const strSearch = searchStaff.staff.map((staff) => {
     return (
       <div className="col-lg-2 col-md-4 col-6" key={staff.id}>
-        <RenderStaffList staff={staff} onClick={props.onClick} />
+        <RenderStaffList
+          staff={staff}
+          onClick={props.onClick}
+          isLoading={props.staffLoading}
+          errMess={props.staffErrMess}
+        />
       </div>
     );
   });
 
-  return (
-    <div className="container">
-      <div className="row">
-        <div className="col-3">
-          <h3 className="staff ">Nhân Viên</h3>
-          <Menu staffList={props.staff} onStaff={onAddStaff} />
+  if (props.staff.isLoading) {
+    return (
+      <div className="container">
+        <div className="row">
+          <Loading />
         </div>
-        <div className="col-9">
-          <Form onSubmit={submitSearch} className="form">
-            <div className="col-8">
+      </div>
+    );
+  } else if (props.staff.errMess) {
+    return (
+      <div className="container">
+        <div className="row">
+          <div className="col-12">
+            <h4>{props.staff.errMess}</h4>
+          </div>
+        </div>
+      </div>
+    );
+  } else
+    return (
+      <div className="container">
+        <div key={props.id} className="row">
+          <div className="row col-12 col-md-6 col-lg-4">
+            <h3 className="staff ">Nhân Viên</h3>
+            <AddStaff staffList={props.staff.staff} postStaff={postStaff} />
+          </div>
+          <div className=" col-12 col-md-6 col-lg-8">
+            <Form onSubmit={submitSearch} className="form">
               <Input
                 type="text"
                 id="search"
@@ -71,8 +108,6 @@ const StaffList = (props) => {
                 onChange={(e) => setSearchInput(e.target.value)}
                 placeholder="Nhập tên nhân viên muốn tìm"
               />
-            </div>
-            <div className="col-4">
               <Button
                 type="submit"
                 value="name"
@@ -81,15 +116,13 @@ const StaffList = (props) => {
               >
                 Tìm
               </Button>
-            </div>
-          </Form>
+            </Form>
+          </div>
+        </div>
+        <div className="row" key={props.id}>
+          {strSearch}
         </div>
       </div>
-      <div className="row" key={props.id}>
-        {strSearch}
-      </div>
-    </div>
-  );
+    );
 };
-
 export default StaffList;

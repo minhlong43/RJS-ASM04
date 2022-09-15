@@ -1,15 +1,20 @@
-import { combineReducers, createStore } from "redux";
-import { Departments } from "./departments";
-import { Role } from "./role";
+import { combineReducers, createStore, applyMiddleware } from "redux";
+import thunk from "redux-thunk";
+import logger from "redux-logger";
+import { Department } from "./department";
 import { Staffs } from "./staff";
+import { Salary } from "./salary";
+import { StaffInDept } from "./staffInDept";
 
 export const ConfigureStore = () => {
   const store = createStore(
     combineReducers({
       staffs: Staffs,
-      departments: Departments,
-      role: Role,
-    })
+      department: Department,
+      salary: Salary,
+      staffInDept: StaffInDept,
+    }),
+    applyMiddleware(thunk, logger)
   );
   return store;
 };

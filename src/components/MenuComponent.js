@@ -8,7 +8,6 @@ import {
   Col,
   Row,
 } from "reactstrap";
-import { STAFFS, DEPARTMENTS } from "../shared/staffs";
 import { LocalForm, Control, Errors } from "react-redux-form";
 
 const required = (val) => val && val.length;
@@ -20,8 +19,7 @@ class Menu extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      staffs: STAFFS,
-      departments: DEPARTMENTS,
+      id: "",
       selectedStaff: null,
       name: "",
       doB: "",
@@ -72,19 +70,16 @@ class Menu extends Component {
 
   handleSubmit(e) {
     // e.preventDefault();
-    const department = DEPARTMENTS.find(
-      (department) => department.id === this.state.department
-    );
+
     const newStaff = {
       id: this.props.staffList.length,
-      name: this.state.name,
-      doB: this.state.doB,
-      // department: this.state.department,
-      department: department,
-      salaryScale: this.state.salaryScale,
-      startDate: this.state.startDate,
-      annualLeave: this.state.annualLeave,
-      overTime: this.state.overTime,
+      name: e.name,
+      doB: e.doB,
+      department: e.department,
+      salaryScale: e.salaryScale,
+      startDate: e.startDate,
+      annualLeave: e.annualLeave,
+      overTime: e.overTime,
       image: "/assets/images/alberto.png",
     };
     this.props.onStaff(newStaff);
@@ -203,18 +198,17 @@ class Menu extends Component {
                             model=".department"
                             className="form-control"
                             id="department"
-                            onChange={this.handleInput}
                             name="department"
                             defaultValue="Sale"
                             validators={{
                               required,
                             }}
                           >
-                            <option>Sales</option>
-                            <option>HR</option>
-                            <option>IT</option>
-                            <option>Marketing</option>
-                            <option>Finance</option>
+                            <option value="Dept01">Sales</option>
+                            <option value="Dept02">HR</option>
+                            <option value="Dept03">IT</option>
+                            <option value="Dept04">Marketing</option>
+                            <option value="Dept05">Finance</option>
                           </Control.select>
                           <Errors
                             className="text-danger"
@@ -326,7 +320,6 @@ class Menu extends Component {
             </form>
           </div>
         </div>
-        {/* <div className="row">{menu}</div> */}
       </div>
     );
   }

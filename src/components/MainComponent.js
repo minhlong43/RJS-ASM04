@@ -1,68 +1,87 @@
 import React, { Component } from "react";
-import { DEPARTMENTS, STAFFS } from "../shared/staffs";
 import Footer from "./FooterComponent";
 import Header from "./HeaderComponent";
 import { Switch, Route, Redirect, withRouter } from "react-router-dom";
-import Salary from "./SalaryComponent";
+import { TransitionGroup, CSSTransition } from "react-transition-group";
 import Department from "./DepartmentComponent";
 import StaffDetail from "./StaffItemComponent";
 import StaffList from "./StaffListComponent";
+import SalaryTable from "./SalaryComponent";
+import StaffDept from "./StaffInDeptComponent";
 import { connect } from "react-redux";
-import { staffNew } from "../redux/Action";
+import {
+  postStaff,
+  fetchStaff,
+  fetchDepartment,
+  addDepartment,
+  fetchStaffSalary,
+  addSalary,
+  updateStaff,
+  deleteStaff,
+} from "../redux/Action";
 
 const mapStateToProps = (state) => {
   return {
     staffs: state.staffs,
     departments: state.departments,
-    role: state.role,
+    salary: state.salary,
   };
 };
 
 const mapDispatchToProps = (dispatch) => ({
-  staffNew: (
-    name,
-    department,
-    startDate,
-    doB,
-    salaryScale,
-    annualLeave,
-    overTime
-  ) =>
-    dispatch(
-      staffNew(
-        name,
-        department,
-        startDate,
-        doB,
-        salaryScale,
-        annualLeave,
-        overTime
-      )
-    ),
+  postStaff: (staff) => {
+    dispatch(postStaff(staff));
+  },
+  fetchStaff: () => {
+    dispatch(fetchStaff());
+  },
+  addDepartment: (department) => {
+    dispatch(addDepartment(department));
+  },
+  fetchDepartment: () => {
+    dispatch(fetchDepartment());
+  },
+  addSalary: (salary) => {
+    dispatch(addSalary(salary));
+  },
+  fetchStaffSalary: () => {
+    dispatch(fetchStaffSalary());
+  },
+  deleteStaff: (id) => {
+    dispatch(deleteStaff(id));
+  },
+  updateStaff: (staff) => {
+    dispatch(updateStaff(staff));
+  },
 });
 class Main extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      staffs: STAFFS,
-      departments: DEPARTMENTS,
-    };
-    this.onAddStaff = this.onAddStaff.bind(this);
   }
 
-  onStaffSelect(staffID) {
-    this.setState({ selectedStaff: staffID });
+  componentDidMount() {
+    this.props.fetchStaff();
+    this.props.fetchDepartment();
+    this.props.fetchStaffSalary();
   }
-  onAddStaff = (staff) => {
-    const id = Math.floor(Math.random() * 10000 + 1);
-    const newStaff = { id, ...staff };
-    this.setState({
-      staffs: [...this.state.staffs, newStaff],
-    });
+
+  postStaff = (newStaff) => {
+    this.setState({ staffs: [...this.props.staffs.staff, newStaff] });
   };
 
+  // onStaffSelect(staffID) {
+  //   this.setState({ selectedStaff: staffID });
+  // }
+  // onAddStaff = (staff) => {
+  //   const id = Math.floor(Math.random() * 10000 + 1);
+  //   const newStaff = { id, ...staff };
+  //   this.setState({
+  //     staffs: [...this.state.staffs, newStaff],
+  //   });
+  // };
+
   render() {
-    const StaffsID = ({ match }) => {
+    const StaffsID = ({ match, history }) => {
       return (
         <StaffDetail
           staffs={
@@ -70,6 +89,9 @@ class Main extends Component {
               (staffs) => staffs.id === parseInt(match.params.id, 10)
             )[0]
           }
+          department={this.props.department}
+          updateStaff={this.props.updateStaff}
+          history={history}
         />
       );
     };
@@ -77,22 +99,46 @@ class Main extends Component {
     return (
       <div>
         <Header />
-        <Switch>
-          <Route
-            exact
-            path="/staff"
-            component={() => (
-              <StaffList
-                staff={this.state.staffs}
-                onAddStaff={this.onAddStaff}
+        <TransitionGroup>
+          <CSSTransition
+            key={this.props.location.key}
+            classNames="page"
+            timeout={300}
+          >
+            <Switch location={this.props.location}>
+              <Route
+                exact
+                path="/staff"
+                component={() => (
+                  <StaffList
+                    staff={this.props.staffs}
+                    onAddStaff={this.onAddStaff}
+                    postStaff={this.props.postStaff}
+                  />
+                )}
               />
-            )}
-          />
-          <Route exact path="/staff/:id" component={StaffsID} />
-          <Route exact path="/department" component={Department} />
-          <Route exact path="/salary" component={Salary} />
-          <Redirect to="/staff" />
-        </Switch>
+              <Route exact path="/staff/:id" component={StaffsID} />
+              {/* <Route exact path="/department" component={Department} /> */}
+              <Route
+                exact
+                path="/department"
+                component={() => (
+                  <Department department={this.props.department} />
+                )}
+              />
+              <Route
+                path="/department/:deptId"
+                component={() => <StaffDept />}
+              />
+              {/* <Route exact path="/salary" component={Salary} /> */}
+              <Route
+                path="/salary"
+                component={() => <SalaryTable staffList={this.props.staffs} />}
+              />
+              <Redirect to="/staff" />
+            </Switch>
+          </CSSTransition>
+        </TransitionGroup>
         <Footer />
       </div>
     );

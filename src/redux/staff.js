@@ -1,14 +1,24 @@
-import { STAFFS } from "../shared/staffs";
 import * as ActionTypes from "./ActionTypes";
 
-export const Staffs = (state = STAFFS, action) => {
+export const Staffs = (
+  state = {
+    errmess: null,
+    staff: [],
+  },
+  action
+) => {
   switch (action.type) {
     case ActionTypes.ADD_STAFF:
-      var newStaff = action.payload;
-      newStaff.id = state.length;
-
-      return state.concat(newStaff);
-
+      return {
+        ...state,
+        isLoading: false,
+        errmess: null,
+        staff: action.payload.staff,
+      };
+    case ActionTypes.STAFF_LOADING:
+      return { ...state, isLoading: true, errmess: null, staff: [] };
+    case ActionTypes.STAFF_FAILED:
+      return { ...state, isLoading: false, errmess: action.payload.staff };
     default:
       return state;
   }
