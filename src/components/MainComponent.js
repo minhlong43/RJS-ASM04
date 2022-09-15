@@ -23,7 +23,7 @@ import {
 const mapStateToProps = (state) => {
   return {
     staffs: state.staffs,
-    departments: state.departments,
+    department: state.department,
     salary: state.salary,
   };
 };
@@ -69,24 +69,13 @@ class Main extends Component {
     this.setState({ staffs: [...this.props.staffs.staff, newStaff] });
   };
 
-  // onStaffSelect(staffID) {
-  //   this.setState({ selectedStaff: staffID });
-  // }
-  // onAddStaff = (staff) => {
-  //   const id = Math.floor(Math.random() * 10000 + 1);
-  //   const newStaff = { id, ...staff };
-  //   this.setState({
-  //     staffs: [...this.state.staffs, newStaff],
-  //   });
-  // };
-
   render() {
     const StaffsID = ({ match, history }) => {
       return (
         <StaffDetail
-          staffs={
+          staff={
             this.props.staffs.filter(
-              (staffs) => staffs.id === parseInt(match.params.id, 10)
+              (staff) => staff.id === parseInt(match.params.id, 10)
             )[0]
           }
           department={this.props.department}
