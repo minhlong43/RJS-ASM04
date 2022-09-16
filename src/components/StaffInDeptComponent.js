@@ -8,7 +8,7 @@ import { useParams } from "react-router-dom";
 function RenderStaffInDept({ x }) {
   return (
     <Card>
-      <CardImg width="100%" src={"/asset/images/alberto.png"} alt={x.image} />
+      <CardImg width="100%" src={"/assets/images/alberto.png"} alt={x.image} />
       <div>
         <CardTitle>{x.name}</CardTitle>
       </div>
@@ -27,13 +27,13 @@ function StaffDept() {
   const dept = useSelector((state) => state.staffInDept);
   const renderEachStaffInDept = dept.dept.map((department) => {
     return (
-      <div className="col-6 col-md-4 col-lg-2">
+      <div className="col-6 col-md-4 col-lg-2 mt-2">
         <RenderStaffInDept x={department} />
       </div>
     );
   });
 
-  return <div className="row">{renderEachStaffInDept}</div>;
+  return <div className="container row">{renderEachStaffInDept}</div>;
 }
 
 export default StaffDept;

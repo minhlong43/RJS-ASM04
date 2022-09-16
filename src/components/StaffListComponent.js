@@ -60,7 +60,7 @@ const StaffList = (props) => {
     props.postStaff(staff);
   };
 
-  const staff1 = searchStaff.staff.map((staff) => {
+  const strSearch = searchStaff.staff.map((staff) => {
     return (
       <div className="col-lg-2 col-md-4 col-6" key={staff.id}>
         <RenderStaffList
@@ -121,7 +121,7 @@ const StaffList = (props) => {
           </div>
         </div>
         <div className="row" key={props.id}>
-          {staff1}
+          {strSearch}
         </div>
       </div>
     );

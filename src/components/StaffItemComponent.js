@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-pascal-case */
 import React, { useState } from "react";
 import dateFormat from "dateformat";
 import {
@@ -185,9 +186,6 @@ function StaffDetail(props) {
                     name="departmentId"
                     defaultValue={props.staff.departmentId}
                   >
-                    <option value="" disabled selected>
-                      Chọn phòng ban
-                    </option>
                     <option value="Dept01">Sale</option>
                     <option value="Dept02">HR</option>
                     <option value="Dept03">Marketing</option>

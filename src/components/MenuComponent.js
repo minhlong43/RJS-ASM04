@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-pascal-case */
 import React, { Component } from "react";
 import {
   Button,
@@ -75,7 +76,7 @@ class Menu extends Component {
       id: this.props.staffList.length,
       name: e.name,
       doB: e.doB,
-      department: e.department,
+      departmentId: e.departmentId,
       salaryScale: e.salaryScale,
       startDate: e.startDate,
       annualLeave: e.annualLeave,
@@ -191,10 +192,10 @@ class Menu extends Component {
                         </Label>
                         <Col md={8}>
                           <Control.select
-                            model=".department"
+                            model=".departmentId"
                             className="form-control"
-                            id="department"
-                            name="department"
+                            // id="department"
+                            name="departmentId"
                             defaultValue="Sale"
                             validators={{
                               required,
@@ -202,8 +203,8 @@ class Menu extends Component {
                           >
                             <option value="Dept01">Sales</option>
                             <option value="Dept02">HR</option>
-                            <option value="Dept03">IT</option>
-                            <option value="Dept04">Marketing</option>
+                            <option value="Dept03">Marketing</option>
+                            <option value="Dept04">IT</option>
                             <option value="Dept05">Finance</option>
                           </Control.select>
                           <Errors
